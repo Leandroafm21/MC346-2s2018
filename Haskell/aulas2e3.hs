@@ -51,3 +51,42 @@ removeTodosItens l it = [x | x <- l, x /= it]
 
 -- 24-) Troca velho por novo todas as vezes (list comprehension)
 trocaTodosItens l velho novo = [if x == velho then novo else x | x <- l]
+
+-- Exercícios da Aula 2
+
+-- 1-) Dado um item e uma lista retorna uma lista com todas as posições (primeiro elemento está na posição 1) do item na lista
+obtemPosicoes l it = obtemPosicoes' l it 1 []
+  where obtemPosicoes' [] _ _ _ = []
+        obtemPosicoes' (x:xs) it pos l
+          | x == it = pos:(obtemPosicoes' xs it (pos+1) l)
+          | otherwise = obtemPosicoes' xs it (pos+1) l
+
+-- 2-) Dado um item e uma lista retorna uma lista de listas, todos os elementos antes do item (a primeira vez que ele aparece) e todos depois
+-- Problema: retorna listas vazias quando o pivô estiver na primeira ou última posição
+split [] _ = [[]]
+split (x:xs) it
+  | x == it = [[], xs]
+  | otherwise = [x:(head res)] ++ tail res
+  where res = split xs it
+
+-- 3-) Mesma coisa que o Split, mas retornando todas as sublistas
+-- Problema: retorna listas vazias quando o pivô estiver na primeira ou última posição
+splitAll [] _ = [[]]
+splitAll (x:xs) it
+  | x == it = []:res
+  | otherwise = [x:(head res)] ++ tail res
+  where res = splitAll xs it
+
+-- 4-) Retorna a lista sem os n primeiros elementos
+dropN l n = dropN' l n 0
+  where dropN' [] _ _ = []
+        dropN' (x:xs) n pos
+          | pos == n = x:xs
+          | otherwise = dropN' xs n (pos+1)
+
+-- 5-) Retorna os n primeiros elementos da lista
+takeN l n = takeN' l n 0 []
+  where takeN' [] _ _ l = l
+        takeN' (x:xs) n pos l
+          | pos == n = l
+          | otherwise = takeN' xs n (pos+1) (l ++ [x])
